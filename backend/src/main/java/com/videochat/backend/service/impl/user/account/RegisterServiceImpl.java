@@ -22,34 +22,34 @@ public class RegisterServiceImpl implements RegisterService {
     public Map<String, String> register(String username, String password) {
         Map<String, String> map = new HashMap<>();
         if (username == null) {
-            map.put("error_message", "username is null");
+            map.put("error_message", "用户名为空！");
             return map;
         }
         if (password == null) {
-            map.put("error_message", "password is null");
+            map.put("error_message", "密码为空！");
             return map;
         }
         username = username.trim();
         if (username.length() < 3 || username.length() > 80) {
-            map.put("error_message", "username length invalid");
+            map.put("error_message", "用户名长度不合法！");
             return map;
         }
         if (password.length() < 6 || password.length() > 80) {
-            map.put("error_message", "password length invalid");
+            map.put("error_message", "密码长度不合法！");
             return map;
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         List<User> users = userMapper.selectList(queryWrapper);
         if (users.size() > 0) {
-            map.put("error_message", "username already exists");
+            map.put("error_message", "用户已存在！");
             return map;
         }
         String encodePassword = passwordEncoder.encode(password);
         String photo = "https://cdn.acwing.com/media/user/profile/photo/58358_lg_be31745d7c.jpg";
         User user = new User(null, username, encodePassword, photo);
         userMapper.insert(user);
-        map.put("success_message", "user registered successfully");
+        map.put("error_message", "success");
         return map;
     }
 }
