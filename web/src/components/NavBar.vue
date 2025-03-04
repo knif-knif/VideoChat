@@ -1,17 +1,17 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
-        <router-link class="navbar-brand" :to="{name: 'home'}">Chat</router-link>
+        <router-link class="navbar-brand" :to="{name: 'home'}">Draw Chess</router-link>
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <!-- <li class="nav-item">
+              <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_index'}">聊天</router-link>
+              </li> -->
               <li class="nav-item">
-              <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_index'}">Text</router-link>
+                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_video'}">PK</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_video'}">Video</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_audio'}">Audio</router-link>
+                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_audio'}">Bot</router-link>
               </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.state.user.is_login">
@@ -21,6 +21,9 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">个人主页</a></li>
+                <li>
+                  <router-link class="dropdown-item" :to="{name: 'bot_index'}">我的Bot</router-link>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" @click="logout">退出登录</a></li>
               </ul>

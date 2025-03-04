@@ -18,6 +18,7 @@ export default {
             state.username = user.username
             state.photo = user.photo
             state.is_login = user.is_login
+            state.token = localStorage.getItem("jwt_token")
         },
         updateToken(state, token) {
             state.token = token

@@ -3,9 +3,10 @@ import ChatIndexView from '../views/chat/ChatIndexView'
 import NotFoundView from '../views/error/NotFoundView'
 import LogInView from '../views/user/account/LogInView'
 import ChatAudioView from '../views/chat/audio/ChatAudioView'
-import ChatTextView from '../views/chat/text/ChatTextView'
 import ChatVideoView from '../views/chat/video/ChatVideoView'
 import RegisterView from '../views/user/account/RegisterView'
+import BotIndexView from '../views/user/bot/BotIndexView'
+import PkIndexView from '../views/pk/PkIndexView'
 import store from '../store/index'
 
 
@@ -13,20 +14,28 @@ const routes = [
   {
     path: "/",
     name: "home",
-    redirect: "/chat/"
+    redirect: "/pk/"
   },
   {
-    path: "/chat/",
-    name: "chat_index",
-    component: ChatIndexView,
+    path: "/pk/",
+    name: "pk_index",
+    component: PkIndexView,
     meta: {
       requestAuth: true,
     },
   },
   {
-    path: "/chat/text/",
-    name: "chat_text",
-    component: ChatTextView,
+    path: "/user/bot/",
+    name: "bot_index",
+    component: BotIndexView,
+    meta: {
+      requestAuth: true,
+    },
+  },
+  {
+    path: "/chat/",
+    name: "chat_index",
+    component: ChatIndexView,
     meta: {
       requestAuth: true,
     },
