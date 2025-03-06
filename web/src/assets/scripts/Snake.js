@@ -101,7 +101,7 @@ export class Snake extends GameObject {
             this.update_move();
         }
 
-        this.render();
+        //this.render();
     }
 
     render() {

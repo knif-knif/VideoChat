@@ -24,6 +24,9 @@ export class GameMap extends GameObject {
 
         this.nxp = 0
         this.cid = 1
+        this.selectX = -1
+        this.selectY = -1
+        this.op = 0
 
         this.cps = [
             new ChessPiece({id: 0, color: "#4876EC"}, this),
@@ -48,8 +51,6 @@ export class GameMap extends GameObject {
     }
 
     add_listening_events() {
-        console.log(this.store.state.record);
-
         if (this.store.state.record.is_record) {
             let k = 0;
 
@@ -73,6 +74,7 @@ export class GameMap extends GameObject {
                 k ++ ;
             }, 300);
         } else {
+            const that = this.store.state.pk.gameObject
             this.ctx.canvas.focus();
 
             this.ctx.canvas.addEventListener("click", e => {
@@ -82,20 +84,51 @@ export class GameMap extends GameObject {
                     x: e.clientX - cX,
                     y: e.clientY - cY
                 }
-                let x = parseInt(pos.x / this.L), y = parseInt(pos.y / this.L)
+                let y = parseInt(pos.x / this.L), x = parseInt(pos.y / this.L)
                 let nx = 0, ny = 0;
 
                 if (this.nxp === this.cid && x >= 0 && x < this.rows && y >= 0 && y < this.cols) {
-                    this.store.state.pk.socket.send(JSON.stringify({
-                        event: "move",
-                        opt: {
-                            op: this.cps[this.nxp].op,
-                            x: y,
-                            y: x,
-                            nx: nx,
-                            ny: ny,
-                        },
-                    }));
+                    if (that.op === 0) {
+                        this.store.state.pk.socket.send(JSON.stringify({
+                            event: "move",
+                            opt: {
+                                op: 0,
+                                x: x,
+                                y: y,
+                                nx: nx,
+                                ny: ny,
+                            },
+                        }));
+                    }
+                    else {
+                        let f = true
+                        const thecp = that.cps[this.cid]
+                        console.log("click", x, y)
+                        for (let i in thecp.cells) {
+                            const r = thecp.cells[i].r, c = thecp.cells[i].c
+                            if (r === x && c === y) {
+                                that.selectX = x
+                                that.selectY = y
+                                f = false
+                                break
+                            }
+                        }
+                        if (f) {
+                            nx = x
+                            ny = y
+                            that.store.state.pk.socket.send(JSON.stringify({
+                                event: "move",
+                                opt: {
+                                    op: 1,
+                                    x: that.selectX,
+                                    y: that.selectY,
+                                    nx: nx,
+                                    ny: ny,
+                                },
+                            }))
+                        }
+                        
+                    }
                 }
             });
         }
@@ -141,6 +174,7 @@ export class GameMap extends GameObject {
                 } else {
                     this.ctx.fillStyle = color_odd;
                 }
+                if (r == this.selectX && c == this.selectY) this.ctx.fillStyle = "#835E41"
                 this.ctx.fillRect(c * this.L, r * this.L, this.L, this.L);
             }
         }

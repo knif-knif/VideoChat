@@ -7,7 +7,6 @@ export class ChessPiece extends GameObject {
         this.id = info.id
         this.color = info.color
         this.gamemap = gamemap
-        this.op = 0
 
         this.cells = []
         this.status = "live"
@@ -29,14 +28,13 @@ export class ChessPiece extends GameObject {
     start() {}
 
     push_chess(op, x, y, nx=0, ny=0) {
-        console.log(op, x, y)
         if (op === 0) {
             this.cells.push(new Cell(x, y))
         } else {
             for (let i in this.cells) {
                 const cell = this.cells[i]
                 if (cell.r === x && cell.c === y) {
-                    this.cells.splice(i)
+                    this.cells.splice(i, 1)
                     break
                 }
             }

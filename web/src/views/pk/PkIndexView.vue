@@ -58,7 +58,13 @@ export default {
                     
                     if (nxtp == store.state.user.id) game.nxp = game.cid
                     else game.nxp = 1 - game.cid
-                    
+                    if (game.cps[game.cid].cells.length >= 10) game.op = 1
+                    if (opt.op !== 0) {
+                        game.selectX = -1
+                        game.selectY = -1
+                    }
+                    console.log(game.op)
+                    console.log(opt)
                 } else if (data.event === "result") {
                     const game = store.state.pk.gameObject
                     const [ cp0, cp1 ] = game.cps
@@ -76,6 +82,7 @@ export default {
         onUnmounted(() => {
             socket.close()
             store.commit("updateStatus", "matching")
+            store.commit("updateWinner", "none")
         })
     }
 }
