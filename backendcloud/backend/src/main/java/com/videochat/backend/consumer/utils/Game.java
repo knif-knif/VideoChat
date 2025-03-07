@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.videochat.backend.consumer.WebSocketServer;
 import com.videochat.backend.pojo.Bot;
 import com.videochat.backend.pojo.Record;
+import com.videochat.backend.pojo.User;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -261,6 +262,16 @@ public class Game extends Thread {
     }
 
     private void saveToDataBase() {
+        Integer ratingA = WebSocketServer.userMapper.selectById(playerA.getId()).getRating();
+        Integer ratingB = WebSocketServer.userMapper.selectById(playerB.getId()).getRating();
+        if ("A".equals(winner)) {
+            ratingA += 5; ratingB -= 2;
+        }
+        else {
+            ratingB += 5; ratingA -= 2;
+        }
+        updateUserRating(playerA, ratingA);
+        updateUserRating(playerB, ratingB);
         Record record = new Record(
                 null,
                 playerA.getId(),
@@ -274,6 +285,12 @@ public class Game extends Thread {
         WebSocketServer.recordMapper.insert(record);
     }
 
+    private void updateUserRating(Player player, Integer rating) {
+        User user = WebSocketServer.userMapper.selectById(player.getId());
+        user.setRating(rating);
+        WebSocketServer.userMapper.updateById(user);
+    }
+
     public void sendResult() {
         JSONObject resp = new JSONObject();
         resp.put("event", "result");
@@ -282,22 +299,11 @@ public class Game extends Thread {
         sendAllMessage(resp.toJSONString());
     }
 
-    private void printG() {
-        System.out.println("G:");
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                System.out.print(g[i][j] + " ");
-            }
-            System.out.println("");
-        }
-    }
-
     @Override
     public void run() {
         for (int i = 0; i < 1000; ++i) {
             if (getNextStep()) {
                 if (!judge()) {
-                    System.out.print("NOT VALID");
                     nextStep = null;
 
                     lock.lock();

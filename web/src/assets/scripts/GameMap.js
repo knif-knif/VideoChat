@@ -1,6 +1,5 @@
 import { GameObject } from "./GameObject";
 import { Wall } from "./Wall";
-import { Snake } from './Snake';
 import { ChessPiece } from './ChessPiece'
 
 export class GameMap extends GameObject {
@@ -16,11 +15,6 @@ export class GameMap extends GameObject {
         this.cols = 8;
 
         this.walls = [];
-
-        this.snakes = [
-            new Snake({id: 0, color: "#4876EC", r: this.rows - 2, c: 1}, this),
-            new Snake({id: 1, color: "#F94848", r: 1, c: this.cols - 2}, this),
-        ]
 
         this.nxp = 0
         this.cid = 1
@@ -52,27 +46,37 @@ export class GameMap extends GameObject {
 
     add_listening_events() {
         if (this.store.state.record.is_record) {
-            let k = 0;
+            let k = 0
+            let idx_a = 0, idx_b = 0
 
             const a_steps = this.store.state.record.a_steps;
             const b_steps = this.store.state.record.b_steps;
-            const loser = this.store.state.record.record_loser;
-            const [snake0, snake1] = this.snakes;
+            const winner = this.store.state.record.record_winner;
+            const [cp0, cp1] = this.cps;
             const interval_id = setInterval(() => {
-                if (k >= a_steps.length - 1) {
-                    if (loser === "all" || loser === "A") {
-                        snake0.status = "die";
-                    }
-                    if (loser === "all" || loser === "B") {
-                        snake1.status = "die";
-                    }
-                    clearInterval(interval_id);
-                } else {
-                    snake0.set_direction(parseInt(a_steps[k]));
-                    snake1.set_direction(parseInt(b_steps[k]));
+                if (idx_a >= Object.keys(a_steps).length || idx_b >= Object.keys(b_steps).length) {
+                    if (winner === "all" || winner === "A") cp0.status = "end"
+                    if (winner === "all" || winner === "B") cp1.status = "end"
+                    clearInterval(interval_id)
                 }
-                k ++ ;
-            }, 300);
+                if ((k > 0 && k % 2 === 0) || k === 1) {
+                    // cp1
+                    const opt = JSON.parse(b_steps[idx_b])
+                    cp1.push_chess(
+                        opt.op, opt.x, opt.y, opt.nx, opt.ny
+                    )
+                    ++idx_b
+                }
+                else {
+                    // cp0
+                    const opt = JSON.parse(a_steps[idx_a])
+                    cp0.push_chess(
+                        opt.op, opt.x, opt.y, opt.nx, opt.ny
+                    )
+                    ++idx_a
+                }
+                k ++ 
+            }, 1000);
         } else {
             const that = this.store.state.pk.gameObject
             this.ctx.canvas.focus();
@@ -103,7 +107,6 @@ export class GameMap extends GameObject {
                     else {
                         let f = true
                         const thecp = that.cps[this.cid]
-                        console.log("click", x, y)
                         for (let i in thecp.cells) {
                             const r = thecp.cells[i].r, c = thecp.cells[i].c
                             if (r === x && c === y) {
@@ -174,8 +177,13 @@ export class GameMap extends GameObject {
                 } else {
                     this.ctx.fillStyle = color_odd;
                 }
-                if (r == this.selectX && c == this.selectY) this.ctx.fillStyle = "#835E41"
                 this.ctx.fillRect(c * this.L, r * this.L, this.L, this.L);
+                if (r == this.selectX && c == this.selectY) {
+                    this.ctx.fillStyle = "rgba(0, 0, 0, 0.2)"
+                    this.ctx.arc((c + 0.5) * this.L, (r + 0.5) * this.L, this.L / 2 * 0.8, 0, 2 * Math.PI)
+                    //this.ctx.globalCompositeOperation = 'destination-out'
+                    this.ctx.fill()
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ export default {
         b_id: 0,
         gameObject: null,
         winner: "none",
+        alert: "hide"
     },
     getters: {
         
@@ -35,6 +36,9 @@ export default {
         },
         updateWinner(state, winner) {
             state.winner = winner
+        },
+        updateAlert(state, alert) {
+            state.alert = alert
         }
     },
     actions: {

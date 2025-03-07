@@ -18,16 +18,18 @@ public class Player {
     private String botCode;
     private List<ChessOperate> cps;
 
+    private boolean checkPosition(ChessOperate cp) {
+        int x = cp.getX(), y = cp.getY(), nx = cp.getNx(), ny = cp.getNy();
+        if (x < 0 || y < 0 || nx < 0 || ny < 0 || x >= 8 || y >= 8 || nx >= 8 || ny >= 8) return false;
+        return true;
+    }
+
     public boolean checkCells() {
-        for (ChessOperate op : cps) {
-            System.out.print(op.getOp() + " ");
-        }
-        System.out.println("");
         for (int i = 0; i < Math.min(10, cps.size()); ++i) {
-            if (cps.get(i).getOp() != 0) return false;
+            if (cps.get(i).getOp() != 0 || !checkPosition(cps.get(i))) return false;
         }
         for (int i = 10; i < cps.size(); ++i) {
-            if (cps.get(i).getOp() == 0) return false;
+            if (cps.get(i).getOp() == 0 || !checkPosition(cps.get(i))) return false;
         }
         return true;
     }

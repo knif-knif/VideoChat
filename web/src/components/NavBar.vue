@@ -8,10 +8,13 @@
               <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_index'}">聊天</router-link>
               </li> -->
               <li class="nav-item">
-                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_video'}">PK</router-link>
+                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'pk_index'}">对战</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'chat_audio'}">Bot</router-link>
+                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'record_index'}">对局列表</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" active-class="active" aria-current="page" :to="{name: 'ranklist_index'}">排行榜</router-link>
               </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.state.user.is_login">

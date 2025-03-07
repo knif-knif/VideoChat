@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-const uri = "http://127.0.0.1:3000/"
+const uri = "https://app2625.acapp.acwing.com.cn/api/"
 
 export default {
 

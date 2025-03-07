@@ -1,9 +1,9 @@
 export default {
     state: {
         is_record: false,
-        a_steps: "",
-        b_steps: "",
-        record_loser: "",
+        a_steps: [],
+        b_steps: [],
+        record_winner: "",
     },
     getters: {
     },
@@ -15,8 +15,8 @@ export default {
             state.a_steps = data.a_steps;
             state.b_steps = data.b_steps;
         },
-        updateRecordLoser(state, loser) {
-            state.record_loser = loser;
+        updateRecordWinner(state, winner) {
+            state.record_winner = winner;
         }
     },
     actions: {

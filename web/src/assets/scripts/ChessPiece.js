@@ -39,6 +39,8 @@ export class ChessPiece extends GameObject {
                 }
             }
             this.cells.push(new Cell(nx, ny))
+            this.gamemap.selectX = x
+            this.gamemap.selectY = y
         }
     }
 

@@ -33,7 +33,7 @@ public class WebSocketServer {
     private User user;
     private Session session = null;
     public Game game = null;
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     private static BotMapper botMapper;
     public static RestTemplate restTemplate;
@@ -122,7 +122,6 @@ public class WebSocketServer {
     }
 
     private void startMatching(Integer botId) {
-        System.out.println("Start matching");
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("user_id", user.getId().toString());
         params.add("rating", user.getRating().toString());
@@ -131,7 +130,6 @@ public class WebSocketServer {
     }
 
     private void stopMatching() {
-        System.out.println("Stop matching");
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", this.user.getId().toString());
         restTemplate.postForObject(removePlayerUrl, data, String.class);
@@ -145,7 +143,6 @@ public class WebSocketServer {
                     opt.getInteger("x"), opt.getInteger("y"),
                     opt.getInteger("nx"), opt.getInteger("ny")
             ));
-            System.out.println(user.getId() + " : " + opt.toJSONString());
         }
     }
 

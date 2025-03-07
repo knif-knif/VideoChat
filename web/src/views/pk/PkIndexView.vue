@@ -1,4 +1,6 @@
 <template>
+    <div class="user-color-blue" v-if="$store.state.pk.status === 'playing' && $store.state.user.id == $store.state.pk.a_id">蓝方</div>
+    <div class="user-color-red" v-if="$store.state.pk.status === 'playing' && $store.state.user.id == $store.state.pk.b_id">红方</div>
     <PlayGround v-if="$store.state.pk.status === 'playing'"/>
     <MatchGround v-if="$store.state.pk.status === 'matching'"/>
     <ResultBoard v-if="$store.state.pk.winner !== 'none'"/>
@@ -10,7 +12,7 @@ import MatchGround from "@/components/MatchGround.vue";
 import ResultBoard from "@/components/ResultBoard.vue";
 import { onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
-
+ 
 export default {
     components: {
         PlayGround,
@@ -19,7 +21,8 @@ export default {
     },
     setup() {
         const store = useStore()
-        const socketUrl = `ws://127.0.0.1:3000/ws/${store.state.user.token}/`
+        const socketUrl = `wss://app2625.acapp.acwing.com.cn/ws/${store.state.user.token}/`
+        store.commit("updateIsRecord", false)
         let socket = null
         onMounted(() => {
             store.commit("updateOpponent", {
@@ -43,7 +46,6 @@ export default {
                         store.commit("updateStatus", "playing")
                     }, 200)
                     store.commit("updateGame", data.game)
-                    
                 } else if (data.event === "move") {
                     const game = store.state.pk.gameObject
                     const [ cp0, cp1 ] = game.cps 
@@ -63,8 +65,6 @@ export default {
                         game.selectX = -1
                         game.selectY = -1
                     }
-                    console.log(game.op)
-                    console.log(opt)
                 } else if (data.event === "result") {
                     const game = store.state.pk.gameObject
                     const [ cp0, cp1 ] = game.cps
@@ -84,6 +84,10 @@ export default {
             store.commit("updateStatus", "matching")
             store.commit("updateWinner", "none")
         })
+
+        return {
+            alert
+        }
     }
 }
 
@@ -91,5 +95,17 @@ export default {
 </script>
 
 <style scoped>
+div.user-color-blue {
+    text-align: center;
+    color: #4876EC;
+    font-size: 30px;
+    font-weight: 600;
+}
+div.user-color-red {
+    text-align: center;
+    color: #F94848;
+    font-size: 30px;
+    font-weight: 600;
+}
 
 </style>

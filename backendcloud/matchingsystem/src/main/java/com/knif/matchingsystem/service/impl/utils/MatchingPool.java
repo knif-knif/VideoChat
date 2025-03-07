@@ -12,8 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Component
 public class MatchingPool extends Thread {
-    private static List<Player> players = new ArrayList<Player>();
-    private ReentrantLock lock = new ReentrantLock();
+    private static List<Player> players = new ArrayList<>();
+    private final ReentrantLock lock = new ReentrantLock();
     private static RestTemplate restTemplate;
     private final static String startGameUrl = "http://127.0.0.1:3000/pk/start/game/";
 
@@ -49,10 +49,7 @@ public class MatchingPool extends Thread {
 
     private boolean checkMatched(Player a, Player b) {
         int ratingDelta = Math.abs(a.getRating() - b.getRating());
-        if (ratingDelta <= Math.min(a.getWaitingTime(), b.getWaitingTime())) {
-            return true;
-        }
-        return false;
+        return ratingDelta <= Math.min(a.getWaitingTime(), b.getWaitingTime());
     }
 
     private void sendResult(Player a, Player b) {

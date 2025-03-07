@@ -1,5 +1,6 @@
 package com.videochat.backend.service.impl.user.bot;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.videochat.backend.mapper.BotMapper;
 import com.videochat.backend.pojo.Bot;
 import com.videochat.backend.pojo.User;
@@ -24,10 +25,18 @@ public class AddServiceImpl implements AddService {
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
+        Map<String, String> map = new HashMap<>();
+
+        QueryWrapper<Bot> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", user.getId());
+        if (botMapper.selectCount(queryWrapper) >= 10) {
+            map.put("error_message", "Bot数量超限！");
+            return map;
+        }
+
         String title = data.get("title");
         String description = data.get("description");
         String content = data.get("content");
-        Map<String, String> map = new HashMap<>();
         if (title == null || title.length() == 0 || title.length() > 100) {
             map.put("error_message", "标题不合法！");
             return map;

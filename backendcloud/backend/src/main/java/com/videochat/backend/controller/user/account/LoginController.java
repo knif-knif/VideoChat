@@ -12,7 +12,7 @@ public class LoginController {
     @Autowired
     private LoginServiceImpl loginService;
 
-    @PostMapping("/user/account/token/")
+    @PostMapping("/api/user/account/token/")
     public Map<String, String> getToken(@RequestParam Map<String, String> req) throws Exception {
         String username = req.get("username");
         String password = req.get("password");

@@ -43,7 +43,7 @@ public class SecurityConfig {
         http.csrf(CsrfConfigurer::disable) // 基于token，不需要csrf
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 基于token，不需要session
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/user/account/token/", "/user/account/register/", "/user/account/info/", "/ws/**").permitAll()
+                        .requestMatchers("/api/user/account/token/", "/api/user/account/register/", "/api/user/account/info/", "/ws/**").permitAll()
                         .requestMatchers("/pk/start/game/", "/pk/receive/bot/move/").access((authenticationConfiguration, context) ->
                                 new AuthorizationDecision(hasIpAddress.matches(context.getRequest())))
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 public class ReceiveBotMoveServiceImpl implements ReceiveBotMoveService {
     @Override
     public String receiveBotMove(Integer userId, String operate) {
-        System.out.println("receiveBotMove" + userId + " " + operate);
         JSONObject opt = JSONObject.parseObject(operate);
 
         if (WebSocketServer.users.get(userId) != null) {

@@ -7,6 +7,9 @@ import ChatVideoView from '../views/chat/video/ChatVideoView'
 import RegisterView from '../views/user/account/RegisterView'
 import BotIndexView from '../views/user/bot/BotIndexView'
 import PkIndexView from '../views/pk/PkIndexView'
+import RecordIndexView from '../views/record/RecordIndexView'
+import RecordContentView from '../views/record/RecordContentView'
+import RanklistIndexView from '../views/ranklist/RanklistIndexView'
 import store from '../store/index'
 
 
@@ -23,6 +26,30 @@ const routes = [
     meta: {
       requestAuth: true,
     },
+  },
+  {
+    path: "/record/",
+    name: "record_index",
+    component: RecordIndexView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/record/:recordId/",
+    name: "record_content",
+    component: RecordContentView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/ranklist/",
+    name: "ranklist_index",
+    component: RanklistIndexView,
+    meta: {
+      requestAuth: true,
+    }
   },
   {
     path: "/user/bot/",

@@ -3,6 +3,7 @@ import ModuleUser from './user'
 import ModuleChat from './chat'
 import ModulePk from './pk'
 import ModuleRecord from './record'
+import ModuleUri from './uri'
 
 export default createStore({
   state: {
@@ -17,6 +18,7 @@ export default createStore({
     user: ModuleUser,
     chat: ModuleChat,
     pk: ModulePk,
-    record: ModuleRecord
+    record: ModuleRecord,
+    uri: ModuleUri,
   }
 })
